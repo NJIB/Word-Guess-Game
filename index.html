@@ -3,7 +3,8 @@
 
 </html>
 <html>
-    <head>
+
+<head>
     <meta charset="UTF-8">
     <title>NJIB Word Guess Game</title>
 
@@ -15,19 +16,56 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Link html to the CSS stylesheet -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-    
+
     <style>
         .col {
             border: 1px solid black;
         }
     </style>
 
-        
-    </head>
-    <body>
+
+</head>
+
+<body>
 
     <!--Link to game script-->
-    <script src="../assets/javascript/game.js"></script>
+    <!-- <script src="../assets/javascript/game.js"></script> -->
+
+    <!-- THIS SCRIPT WILL GET MOVED INTO THE GAME.JS FILE-->
+    <script>
+        var wannaPlay = confirm("Do you like soccer? Let's play a game!");
+        // listofTeams is the array containing all 20 possible answers
+        var listofTeams = ["Arsenal", "Aston Villa", "Bournemouth", "Brighton Hove Albion", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Leicester City", "Liverpool", "Manchester City", "Manchester United", "Newcastle United", "Norwich City", "Sheffield United", "Southampton", "Tottenham Hotspur", "Watford", "West Ham United", "Wolverhampton Wanderers"];
+        // chosenTeam is the team the computer randomly selects
+        var chosenTeam = [];
+        // blankDisplay is how the blanks are shown on the screen
+        var blankDisplay = [];
+
+
+        // Computer randomly chooses a team - WORKING
+        function chooseTeam() {
+            chosenTeam = listofTeams.length;
+            chosenTeam = listofTeams[Math.floor(Math.random() * listofTeams.length)];
+            console.log(chosenTeam);
+        }
+
+        // Computer calculates length of string for team chosen, and displays placeholders
+        function displayPlaceholders() {
+            var teamNameLength = chosenTeam.length;
+            console.log(teamNameLength);
+
+            // NEED TO WORK OUT HOW TO  PRODUCE E.G. 14 BLANKS FOR CRYSTAL PALACE
+            console.log(blankDisplay);
+        }
+
+        chooseTeam();
+        displayPlaceholders(chosenTeam);
+
+
+
+    </script>
+
+
 
     <!-- jQuery, javascript file for the Bootstrap's javascript file to function -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -35,5 +73,6 @@
     <!-- Bootstrap's javascript file that allows the dropdown menu to work  -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     ​
-    </body>
+</body>
+
 </html>
