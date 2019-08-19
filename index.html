@@ -33,33 +33,63 @@
 
     <!-- THIS SCRIPT WILL GET MOVED INTO THE GAME.JS FILE-->
     <script>
-        var wannaPlay = confirm("Do you like soccer? Let's play a game!");
+        //INSERT ANY-KEY PRESS TO START THE GAME
+        // var wannaPlay = confirm("Do you like soccer? Let's play a game!");
         // listofTeams is the array containing all 20 possible answers
         var listofTeams = ["Arsenal", "Aston Villa", "Bournemouth", "Brighton Hove Albion", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Leicester City", "Liverpool", "Manchester City", "Manchester United", "Newcastle United", "Norwich City", "Sheffield United", "Southampton", "Tottenham Hotspur", "Watford", "West Ham United", "Wolverhampton Wanderers"];
         // chosenTeam is the team the computer randomly selects
         var chosenTeam = [];
+        // chosenTeam is the lower case of chosenTeam - used for search, not for display
+        var chosenTeamLowerCase = [];        
         // blankDisplay is how the blanks are shown on the screen
         var blankDisplay = [];
+        //teamNameLength counts the length of the chosenTeam
+        var teamNameLength = 0;
+        //letterGuessed captures the key the player hits to guess a letter
+        var letterGuessed = [];
+        //letterPosition identifies the position in the chosenTeam string of the guessed letter
+        var letterPosition = 0;
 
 
         // Computer randomly chooses a team - WORKING
         function chooseTeam() {
-            chosenTeam = listofTeams.length;
             chosenTeam = listofTeams[Math.floor(Math.random() * listofTeams.length)];
+            chosenTeamLowerCase = chosenTeam.toLowerCase();
             console.log(chosenTeam);
         }
 
         // Computer calculates length of string for team chosen, and displays placeholders
         function displayPlaceholders() {
-            var teamNameLength = chosenTeam.length;
+            teamNameLength = chosenTeam.length;
             console.log(teamNameLength);
 
-            // NEED TO WORK OUT HOW TO  PRODUCE E.G. 14 BLANKS FOR CRYSTAL PALACE
-            console.log(blankDisplay);
+        // blankDisplay populated with the same number of "_" as the length of chosenTeam
+            for (var blankCount = 0; blankCount < teamNameLength; blankCount++) {
+                blankDisplay.push(" _ ");
+                if (blankDisplay.length === teamNameLength) {
+                console.log(blankDisplay);
+                document.write(blankDisplay);
+                }
+            }
         }
+
+            function playerGuesses() {
+                // Senses which key the player has selected
+                document.onkeyup = function (event) {
+                    letterGuessed = event.key.toLowerCase();
+                        console.log(letterGuessed);
+
+                    // Determines which position in the array the letter sits (NEED TO WORK OUT HOW TO LOOP THROUGH FOR MULTIPLE OCCURRENCES)    
+                    letterPosition = chosenTeamLowerCase.indexOf(letterGuessed); 
+                        console.log(letterPosition);
+
+                }
+
+            }
 
         chooseTeam();
         displayPlaceholders(chosenTeam);
+        playerGuesses();
 
 
 
