@@ -53,8 +53,14 @@
         var guessesRemaining = 10;
         //letterPosition identifies the position in the chosenTeam string of the guessed letter
         var letterPosition = [];
-        //stringLocation controls where the program is looking in chosenTeam
-        var stringLocation = 0;
+        //occurrenceCount stores the number of occurrences in the chosenTeam string
+        var occurrenceCount = 0;
+        //totalGuessed counts total number of letters guessed
+        var totalGuessed = 0;
+        //playerOutcome prints out how far the player got [by the end of the game]
+        var playerOutcome = [];
+        //incorrectGuesses logs incorrectly guessed letters - to display, but also count guessesRemaining
+        var incorrectGuesses = [];
 
 
         // Computer randomly chooses a team - WORKING
@@ -76,7 +82,7 @@
                 blankDisplay.push(" _ ");
                 if (blankDisplay.length === teamNameLength) {
                     console.log(blankDisplay);
-                    document.write(blankDisplay);
+                    // document.write(blankDisplay);
                 }
             }
         }
@@ -89,39 +95,69 @@
 
                 //guessCounter incremented by for each guess
                 guessCounter++;
-                // console.log(guessCounter);
-
-                //Remaining guesses calculated
-                guessesRemaining = (10-guessCounter);
-                // console.log(guessesRemaining);
-
-                locateGuessinString();
+                console.log("guessCounter: " + guessCounter);
+                //If guess correct, move on to log guess, otherwise log as incorrect, decrement guessesRemaining
+                if(chosenTeamLowerCase.indexOf(letterGuessed)> -1) {
+                    checkWinLose();
+                    locateGuessinString();
+                } else
+                incorrectGuesses.push (letterGuessed);
+                console.log("incorrectGuesses: " + incorrectGuesses);
+                guessesRemaining = (10-incorrectGuesses.length);
+                console.log("guessesRemaining: " + guessesRemaining);
+                checkWinLose();
             }
         }
         
             function locateGuessinString() {
-                // Determines which position in the array the letter sits (NEED TO WORK OUT HOW TO LOOP THROUGH FOR MULTIPLE OCCURRENCES)  
-            //Original working code - but only working for one occurrence  
-                // letterPosition = chosenTeamLowerCase.indexOf(letterGuessed);
-                // replacePlaceholders(letterPosition);
-            //End of original working code
-                for (stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
+                // Determines which position in the array the letter sits 
+                for (var stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
                     if (chosenTeamLowerCase[stringLocation] === letterGuessed) {
                         letterPosition.push (stringLocation);
-                    }
+                    }  
                 }
-                replacePlaceholders(letterPosition);
+
+                replacePlaceholders();
+
+                //Clears the letterPosition array - and therefore the occurrenceCount
+                letterPosition = [];
             }
 
-        function replacePlaceholders(letterPosition) {
+        function replacePlaceholders() {
             // Replace blanks with letters guessed
-            if (letterPosition > -1) {
-            //Write letterGuessed back to blankDisplay, converting back to upper case, if necessary - TESTING
-                blankDisplay[letterPosition] = chosenTeam[letterPosition];
-                console.log(blankDisplay);
-                // document.write("<br />" + blankDisplay);
+        occurrenceCount = letterPosition.length;
+            console.log("occurrenceCount: " + occurrenceCount);
+
+            totalGuessed += occurrenceCount;
+            console.log("totalGuessed: " + totalGuessed);    
+
+            console.log("guessCounter: " + guessCounter);
+            console.log("guessesRemaining: " + guessesRemaining);
+
+
+            for (var stringLocation = 0; stringLocation <  occurrenceCount; stringLocation++) {
+            blankDisplay[letterPosition[stringLocation]] = chosenTeam[letterPosition[stringLocation]];
+            //Log latest to playerOutcome
+            playerOutcome = [];
+            playerOutcome = playerOutcome.toString() + blankDisplay.toString();
             }
+            console.log(blankDisplay);
         }
+
+
+        function checkWinLose() {
+            if ((totalGuessed >= teamNameLength && guessesRemaining >0)) {
+            //     document.write("Goooooaaaaallll - you win!  <br />" + blankDisplay);
+                document.write("Goooooaaaaallll - you win!  <br />" + blankDisplay.toString());
+            } else
+            
+            if ((totalGuessed < teamNameLength) && (guessesRemaining <1)) {
+                document.write("Loser...!  <br />You guessed:  " + playerOutcome + "<br />The correct answer was:  " + chosenTeam);
+            } 
+
+        }
+
+
 
 
         //FUNCTION CALLS FOR PROGRAM EXECUTION        
