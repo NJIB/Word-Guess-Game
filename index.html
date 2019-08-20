@@ -47,14 +47,14 @@
         var teamNameLength = 0;
         //letterGuessed captures the key the player hits to guess a letter
         var letterGuessed = [];
-        //letterReturned is the letter printed to screen (converted back to caps if necessary)
-        var letterPrinted = [];
         //Guess counter
         var guessCounter = 0;
         //Guesses remaining
         var guessesRemaining = 10;
         //letterPosition identifies the position in the chosenTeam string of the guessed letter
-        var letterPosition = 0;
+        var letterPosition = [];
+        //stringLocation controls where the program is looking in chosenTeam
+        var stringLocation = 0;
 
 
         // Computer randomly chooses a team - WORKING
@@ -95,15 +95,26 @@
                 guessesRemaining = (10-guessCounter);
                 // console.log(guessesRemaining);
 
-                // Determines which position in the array the letter sits (NEED TO WORK OUT HOW TO LOOP THROUGH FOR MULTIPLE OCCURRENCES)    
-                letterPosition = chosenTeamLowerCase.indexOf(letterGuessed);
-                replacePlaceholders(letterPosition, letterGuessed);
+                locateGuessinString();
             }
         }
+        
+            function locateGuessinString() {
+                // Determines which position in the array the letter sits (NEED TO WORK OUT HOW TO LOOP THROUGH FOR MULTIPLE OCCURRENCES)  
+            //Original working code - but only working for one occurrence  
+                // letterPosition = chosenTeamLowerCase.indexOf(letterGuessed);
+                // replacePlaceholders(letterPosition);
+            //End of original working code
+                for (stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
+                    if (chosenTeamLowerCase[stringLocation] === letterGuessed) {
+                        letterPosition.push (stringLocation);
+                    }
+                }
+                replacePlaceholders(letterPosition);
+            }
 
-        function replacePlaceholders(letterPosition, letterGuessed) {
+        function replacePlaceholders(letterPosition) {
             // Replace blanks with letters guessed
-            // for (var blankCount = 0; blankCount < teamNameLength; blankCount++) {
             if (letterPosition > -1) {
             //Write letterGuessed back to blankDisplay, converting back to upper case, if necessary - TESTING
                 blankDisplay[letterPosition] = chosenTeam[letterPosition];
