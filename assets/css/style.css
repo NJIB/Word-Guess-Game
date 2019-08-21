@@ -1,0 +1,81 @@
+@import url('https://fonts.googleapis.com/css?family=Alfa+Slab+One&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Bungee+Inline&display=swap');
+
+
+
+
+#topBanner {
+    font-family: 'Bungee Inline', cursive;
+    color: yellow;
+    text-align: center;
+}
+
+#scoreBoard{
+    font-family: 'Alfa Slab One', cursive;
+    color: white;
+}
+
+header{
+    height: 80px;
+}
+
+
+body{
+    /* background-image: url("../images/soccer-goal-football-goalpost-with-net-on-a-vector-21718856.jpg"); */
+    background-image: url("../images/soccer-goal-football-goalpost-with-net-on-a-vector-21718856.jpg");
+    background-repeat: no-repeat;
+    background-size: 100% 600px;
+}
+
+/* NEED TO ANCHOR FOOTER TO BOTTOM - USE BOOTSTRAP TO MAKE MORE INTERESTING */
+footer{
+    bottom: 0px;
+    position: fixed;
+    height: 50px;
+    width: 100%;
+    background-color: white;
+    text-align: center;
+    font-size: 10px;
+}
+
+p {
+    color: white;
+}
+
+.scoreBoard-container {
+    display: grid;
+    box-sizing: border-box;
+    width: 90%;
+    margin: auto;
+    grid-template-columns: 30% 10% 20% 30% 10%;
+    grid-template-rows: auto;
+    text-align: left;
+    font-size: 25px;
+    padding: 20px;
+}
+
+.game-container {
+    position: absolute;
+    top: 63%;
+    box-sizing: border-box;
+    width: 100%;
+    margin: auto;
+    /* background-color: greenyellow; */
+    z-index: 1;
+}
+
+.letter-container {
+    display: grid;
+    box-sizing: border-box;
+    width: 80%;
+    margin: auto;
+    grid-template-columns: 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5% 5%;
+    grid-template-rows: auto;
+    text-align: center;
+    color: yellow;
+    font-size: 50px;
+    font-weight: bold;
+    padding: 20px;
+}
+
+

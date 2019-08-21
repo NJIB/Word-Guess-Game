@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="en-us">
 
-</html>
 <html>
 
 <head>
+    <!-- Media queries not required right now-->
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+
+
     <meta charset="UTF-8">
     <title>NJIB Word Guess Game</title>
 
@@ -14,25 +17,68 @@
     <!-- Link html to the Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    
     <!-- Link html to the CSS stylesheet -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
-
-    <style>
-        .col {
-            border: 1px solid black;
-        }
-    </style>
-
 
 </head>
 
 <body>
 
+    <header>
+        <!--ACTION:  Put into a container to wrap on page resizing-->
+        <h1 id="topBanner">Premier League <br /> Word Guess Game</h1>
+    </header>
+
+    <!--Creating a div on the browser, to display the scoreboard-->
+    <div class="container">
+        <div id="scoreBoard" class="scoreBoard-container">
+            <div>
+                Player Score:
+            </div>
+            <div id="playerScore">
+            </div>
+            <!--Scoreboard Center-->
+            <div></div>
+            <div>
+                    Computer Score:
+                </div>
+                <div id="computerScore">
+                </div>    
+        </div>
+    </div>
+
+    <!--Creating a div on the browser, to display the scoreboard-->
+    <div class="game-container">
+        <div class="letter-container">
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+            <div>X</div> 
+        </div>
+    </div>
+
     <!--Link to game script-->
     <!-- <script src="../assets/javascript/game.js"></script> -->
 
     <!-- THIS SCRIPT WILL GET MOVED INTO THE GAME.JS FILE-->
-    <script>
+    <script type="text/javascript">
         //INSERT ANY-KEY PRESS TO START THE GAME
         // var wannaPlay = confirm("Do you like soccer? Let's play a game!");
         // listofTeams is the array containing all 20 possible answers
@@ -61,6 +107,7 @@
         var playerOutcome = [];
         //incorrectGuesses logs incorrectly guessed letters - to display, but also count guessesRemaining
         var incorrectGuesses = [];
+
 
 
         // Computer randomly chooses a team - WORKING
@@ -106,6 +153,7 @@
                 guessesRemaining = (10-incorrectGuesses.length);
                 console.log("guessesRemaining: " + guessesRemaining);
                 checkWinLose();
+                displayScore();
             }
         }
         
@@ -157,6 +205,27 @@
 
         }
 
+            function displayScore() {
+                //scoreBoardDiv1 "grabs" the div with the matching id (playerScore); 
+                var scoreboardDiv1 = document.getElementById("playerScore");
+                // We create a new element to hold the playerScore
+                var contentBlock1 = document.createElement("int");
+                // We then assign the text of this element to be the text in the div
+                contentBlock1.textContent = totalGuessed;
+                // We then add the element to the our main div on the page (playerScore)
+                playerScore.append(contentBlock1);
+
+            // function displayComputerScore() {
+                //scoreBoardDiv2 "grabs" the div with the matching id (computerScore); 
+                var scoreboardDiv2 = document.getElementById("computerScore");
+                // We create a new element to hold the playerScore
+                var contentBlock2 = document.createElement("int");
+                // We then assign the text of this element to be the text in the div
+                contentBlock2.textContent = incorrectGuesses.length;
+                // We then add the element to the our main div on the page (computerScore)
+                computerScore.append(contentBlock2);
+
+            }
 
 
 
@@ -171,6 +240,16 @@
 
     </script>
 
+<footer class="footer mt-auto py-3">
+        <div class="container">
+          <span class="text-muted">Copyright &copy</span>
+        </div>
+      </footer>
+
+    <!-- <footer>
+        Copyright &copy;
+    </footer> -->
+    
 
 
     <!-- jQuery, javascript file for the Bootstrap's javascript file to function -->
