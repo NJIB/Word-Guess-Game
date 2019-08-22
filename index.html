@@ -56,7 +56,7 @@
     <!--Creating a div on the browser, to display the scoreboard-->
     <div class="game-container">
         <div class="letter-container">
-            <div></div>
+            <div id=></div>
             <div id="letterContainer"></div>
             <div></div>
         </div>
@@ -125,6 +125,7 @@
                 blankDisplay.push(" _ ");
                 if (blankDisplay.length === teamNameLength) {
                     console.log(blankDisplay);
+                    document.getElementById("letterContainer").innerHTML = blankDisplay;
               }
             }
         }
@@ -174,7 +175,7 @@
             console.log("guessCounter: " + guessCounter);
             console.log("guessesRemaining: " + guessesRemaining);
             for (var stringLocation = 0; stringLocation <  occurrenceCount; stringLocation++) {
-            blankDisplay[letterPosition[stringLocation]] = chosenTeam[letterPosition[stringLocation]];
+            blankDisplay[letterPosition[stringLocation]] = (chosenTeam[letterPosition[stringLocation]]);
             //Log latest to playerOutcome
             playerOutcome = [];
             playerOutcome = playerOutcome.toString() + blankDisplay.toString();
@@ -202,7 +203,11 @@
             function displayUpdate() {
                 document.getElementById("playerScore").innerHTML = totalGuessed;
                 document.getElementById("computerScore").innerHTML = incorrectGuesses.length;
-                document.getElementById("letterContainer").innerHTML = playerOutcome;
+                if (totalGuessed < 1){
+                document.getElementById("letterContainer").innerHTML = blankDisplay;
+                }
+                else {document.getElementById("letterContainer").innerHTML = playerOutcome;
+                }
                 if (incorrectGuesses.length > 0) {
                 document.getElementById("incorrectGuessListTitle").innerHTML = "Incorrect guesses:  ";
                 document.getElementById("incorrectGuessList").innerHTML = incorrectGuesses;
