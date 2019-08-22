@@ -21,9 +21,10 @@
     <!-- Link html to the CSS stylesheet -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
-</head onload="startGame()">
+</head>
 
 <body>
+        <!-- document.getElementById("body").addEventListener("keypress", startGame()); -->
 
     <header>
         <!--ACTION:  Put into a container to wrap on page resizing-->
@@ -48,12 +49,20 @@
         </div>
     <!-- </div> -->
 
+        <div id="teamBadge">
+            <img src="https://upload.wikimedia.org/wikipedia/hif/b/bd/Liverpool_FC.png" height=250 width=185>;
+        </div>
+
     <!--Creating a div on the browser, to display the scoreboard-->
     <div class="game-container">
         <div class="letter-container">
             <div></div>
-            <div id=letterContainer></div> 
+            <div id="letterContainer"></div>
             <div></div>
+        </div>
+        <div id="incorrect-letter-container">
+                <div id="incorrectGuessListTitle"></div>
+                <div id=incorrectGuessList></div>
         </div>
     </div>
 
@@ -90,6 +99,11 @@
         var playerOutcome = [];
         //incorrectGuesses logs incorrectly guessed letters - to display, but also count guessesRemaining
         var incorrectGuesses = [];
+        //gamesWon counts total number of games won
+        var gamesWon = 0;
+        //gamesWon counts total number of games lost
+        var gamesLost = 0;
+
 
 
         // Computer randomly chooses a team - WORKING
@@ -133,8 +147,8 @@
                 console.log("incorrectGuesses: " + incorrectGuesses);
                 guessesRemaining = (10-incorrectGuesses.length);
                 console.log("guessesRemaining: " + guessesRemaining);
+                displayUpdate();
                 checkWinLose();
-                displayScore();
             }
         }
         
@@ -143,7 +157,7 @@
                 for (var stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
                     if (chosenTeamLowerCase[stringLocation] === letterGuessed) {
                         letterPosition.push (stringLocation);
-                    }  
+                    } 
                 }
                 replacePlaceholders();
 
@@ -156,9 +170,9 @@
         occurrenceCount = letterPosition.length;
             console.log("occurrenceCount: " + occurrenceCount);
             totalGuessed += occurrenceCount;
-            // console.log("totalGuessed: " + totalGuessed);    
-            // console.log("guessCounter: " + guessCounter);
-            // console.log("guessesRemaining: " + guessesRemaining);
+            console.log("totalGuessed: " + totalGuessed);    
+            console.log("guessCounter: " + guessCounter);
+            console.log("guessesRemaining: " + guessesRemaining);
             for (var stringLocation = 0; stringLocation <  occurrenceCount; stringLocation++) {
             blankDisplay[letterPosition[stringLocation]] = chosenTeam[letterPosition[stringLocation]];
             //Log latest to playerOutcome
@@ -166,53 +180,36 @@
             playerOutcome = playerOutcome.toString() + blankDisplay.toString();
             }
             // console.log(blankDisplay);
-            displayPuzzleStatus();
         }
 
 
         function checkWinLose() {
-            if ((totalGuessed >= teamNameLength && guessesRemaining >0)) {
+            if ((totalGuessed >= teamNameLength) && (guessesRemaining >0)) {
             //     document.write("Goooooaaaaallll - you win!  <br />" + blankDisplay);
                 alert("Goooooaaaaallll - you win!" + "\n \n" + blankDisplay.toString());
+                gamesWon++;
+                console.log(gamesWon);
             } else
             
             if ((totalGuessed < teamNameLength) && (guessesRemaining <1)) {
                alert("Loser...! You guessed:  " + playerOutcome  + "\n \n" + "The correct answer was:  " + chosenTeam);
+               gamesLost++;
+                console.log(gamesLost);
             } 
 
         }
 
-            function displayScore() {
-                //scoreBoardDiv1 "grabs" the div with the matching id (playerScore); 
-                var scoreboardDiv1 = document.getElementById("playerScore");
-                // We create a new element to hold the playerScore
-                var contentBlock1 = document.createElement("int");
-                // We then assign the text of this element to be the text in the div
-                contentBlock1.textContent = totalGuessed;
-                // We then add the element to the our main div on the page (playerScore)
-                playerScore.append(contentBlock1);
-
-            // function displayComputerScore() {
-                //scoreBoardDiv2 "grabs" the div with the matching id (computerScore); 
-                var scoreboardDiv2 = document.getElementById("computerScore");
-                // We create a new element to hold the playerScore
-                var contentBlock2 = document.createElement("int");
-                // We then assign the text of this element to be the text in the div
-                contentBlock2.textContent = incorrectGuesses.length;
-                // We then add the element to the our main div on the page (computerScore)
-                computerScore.append(contentBlock2);
+            function displayUpdate() {
+                document.getElementById("playerScore").innerHTML = totalGuessed;
+                document.getElementById("computerScore").innerHTML = incorrectGuesses.length;
+                document.getElementById("letterContainer").innerHTML = playerOutcome;
+                if (incorrectGuesses.length > 0) {
+                document.getElementById("incorrectGuessListTitle").innerHTML = "Incorrect guesses:  ";
+                document.getElementById("incorrectGuessList").innerHTML = incorrectGuesses;
+                }
             }
 
-            function displayPuzzleStatus() {
-                    var gameareaDiv = document.getElementById("letterContainer");
-                    // var contentBlock3 = document.createElement("p");
-                    var contentBlock3 = document.createTextNode(blankDisplay);
-                    contentBlock3.textContent = playerOutcome;
-                    letterContainer.append(contentBlock3);
-            }
-
-
-        //FUNCTION CALLS FOR PROGRAM EXECUTION        
+        //FUNCTION CALLS FOR PROGRAM EXECUTION   
         chooseTeam();
         chosenTeamLengthCount();
         displayPlaceholders();
@@ -229,10 +226,6 @@
         </div>
       </footer>
 
-    <!-- <footer>
-        Copyright &copy;
-    </footer> -->
-    
 
 
     <!-- jQuery, javascript file for the Bootstrap's javascript file to function -->

@@ -55,6 +55,14 @@ p {
     padding: 20px;
 }
 
+#teamBadge {
+    display: block;
+    box-sizing: border-box;
+    width: 30%;
+    margin: auto;
+    display: none;
+}
+
 .game-container {
     position: absolute;
     top: 63%;
@@ -77,6 +85,21 @@ p {
     font-weight: bold;
     padding: 20px;
 }
+
+#incorrect-letter-container {
+    display: grid;
+    box-sizing: border-box;
+    width: 80%;
+    margin: auto;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto;
+    text-align: left;
+    color: yellow;
+    font-size: 30px;
+    font-weight: bold;
+    padding: 20px;
+}
+
 
 @media screen and (max-width: 979px){
     .container{width: 100%;}
