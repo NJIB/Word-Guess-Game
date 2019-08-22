@@ -4,8 +4,8 @@
 <html>
 
 <head>
-    <!-- Media queries not required right now-->
-    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <!-- For media queries-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 
     <meta charset="UTF-8">
@@ -21,17 +21,17 @@
     <!-- Link html to the CSS stylesheet -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
-</head>
+</head onload="startGame()">
 
 <body>
 
     <header>
         <!--ACTION:  Put into a container to wrap on page resizing-->
-        <h1 id="topBanner">Premier League <br /> Word Guess Game</h1>
+        <h1 id="topBanner">Premier League Word Guess Game</h1>
     </header>
 
     <!--Creating a div on the browser, to display the scoreboard-->
-    <div class="container">
+    <!-- <div class="container"> -->
         <div id="scoreBoard" class="scoreBoard-container">
             <div>
                 Player Score:
@@ -46,31 +46,14 @@
                 <div id="computerScore">
                 </div>    
         </div>
-    </div>
+    <!-- </div> -->
 
     <!--Creating a div on the browser, to display the scoreboard-->
     <div class="game-container">
         <div class="letter-container">
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
-            <div>X</div> 
+            <div></div>
+            <div id=letterContainer></div> 
+            <div></div>
         </div>
     </div>
 
@@ -109,7 +92,6 @@
         var incorrectGuesses = [];
 
 
-
         // Computer randomly chooses a team - WORKING
         function chooseTeam() {
             chosenTeam = listofTeams[Math.floor(Math.random() * listofTeams.length)];
@@ -129,8 +111,7 @@
                 blankDisplay.push(" _ ");
                 if (blankDisplay.length === teamNameLength) {
                     console.log(blankDisplay);
-                    // document.write(blankDisplay);
-                }
+              }
             }
         }
 
@@ -164,7 +145,6 @@
                         letterPosition.push (stringLocation);
                     }  
                 }
-
                 replacePlaceholders();
 
                 //Clears the letterPosition array - and therefore the occurrenceCount
@@ -175,32 +155,29 @@
             // Replace blanks with letters guessed
         occurrenceCount = letterPosition.length;
             console.log("occurrenceCount: " + occurrenceCount);
-
             totalGuessed += occurrenceCount;
-            console.log("totalGuessed: " + totalGuessed);    
-
-            console.log("guessCounter: " + guessCounter);
-            console.log("guessesRemaining: " + guessesRemaining);
-
-
+            // console.log("totalGuessed: " + totalGuessed);    
+            // console.log("guessCounter: " + guessCounter);
+            // console.log("guessesRemaining: " + guessesRemaining);
             for (var stringLocation = 0; stringLocation <  occurrenceCount; stringLocation++) {
             blankDisplay[letterPosition[stringLocation]] = chosenTeam[letterPosition[stringLocation]];
             //Log latest to playerOutcome
             playerOutcome = [];
             playerOutcome = playerOutcome.toString() + blankDisplay.toString();
             }
-            console.log(blankDisplay);
+            // console.log(blankDisplay);
+            displayPuzzleStatus();
         }
 
 
         function checkWinLose() {
             if ((totalGuessed >= teamNameLength && guessesRemaining >0)) {
             //     document.write("Goooooaaaaallll - you win!  <br />" + blankDisplay);
-                document.write("Goooooaaaaallll - you win!  <br />" + blankDisplay.toString());
+                alert("Goooooaaaaallll - you win!" + "\n \n" + blankDisplay.toString());
             } else
             
             if ((totalGuessed < teamNameLength) && (guessesRemaining <1)) {
-                document.write("Loser...!  <br />You guessed:  " + playerOutcome + "<br />The correct answer was:  " + chosenTeam);
+               alert("Loser...! You guessed:  " + playerOutcome  + "\n \n" + "The correct answer was:  " + chosenTeam);
             } 
 
         }
@@ -224,9 +201,15 @@
                 contentBlock2.textContent = incorrectGuesses.length;
                 // We then add the element to the our main div on the page (computerScore)
                 computerScore.append(contentBlock2);
-
             }
 
+            function displayPuzzleStatus() {
+                    var gameareaDiv = document.getElementById("letterContainer");
+                    // var contentBlock3 = document.createElement("p");
+                    var contentBlock3 = document.createTextNode(blankDisplay);
+                    contentBlock3.textContent = playerOutcome;
+                    letterContainer.append(contentBlock3);
+            }
 
 
         //FUNCTION CALLS FOR PROGRAM EXECUTION        
