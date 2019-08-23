@@ -17,41 +17,50 @@
     <!-- Link html to the Bootstrap CDN -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-    
+
     <!-- Link html to the CSS stylesheet -->
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 
 </head>
 
 <body>
-        <!-- document.getElementById("body").addEventListener("keypress", startGame()); -->
+    <!-- document.getElementById("body").addEventListener("keypress", startGame()); -->
 
     <header>
-        <!--ACTION:  Put into a container to wrap on page resizing-->
-        <h1 id="topBanner">Premier League Word Guess Game</h1>
+        <h1 id="topBanner"> Premier League Word Guess Game</h1>
     </header>
+
+    <!--Creating a div on the browser, to display the total score-->
+    <div id="totalScore">TOTAL SCORE:  </div>
 
     <!--Creating a div on the browser, to display the scoreboard-->
     <!-- <div class="container"> -->
-        <div id="scoreBoard" class="scoreBoard-container">
-            <div>
-                Player Score:
-            </div>
-            <div id="playerScore">
-            </div>
-            <!--Scoreboard Center-->
-            <div></div>
-            <div>
-                    Computer Score:
-                </div>
-                <div id="computerScore">
-                </div>    
+    <div id="scoreBoard" class="scoreBoard-container">
+        <div>
+            Player Score:
         </div>
+        <div id="playerScore">
+        </div>
+        <!--Scoreboard Center-->
+        <div></div>
+        <div>
+            Computer Score:
+        </div>
+        <div id="computerScore">
+        </div>
+    </div>
     <!-- </div> -->
 
-        <div id="teamBadge">
-            <img src="https://upload.wikimedia.org/wikipedia/hif/b/bd/Liverpool_FC.png" height=250 width=185>;
+    <div class="goalAreaMessages">
+        <div>
         </div>
+        <div id="teamBadge">
+        <img src="https://upload.wikimedia.org/wikipedia/hif/b/bd/Liverpool_FC.png" height=250 width=185>;
+        </div>
+        <!-- <div id="pressToRestart"> -->
+        <button id="pressToRestart" onclick="pressToRestart()">Play again?</button>
+        <!-- </div> -->
+    </div>
 
     <!--Creating a div on the browser, to display the scoreboard-->
     <div class="game-container">
@@ -61,8 +70,8 @@
             <div></div>
         </div>
         <div id="incorrect-letter-container">
-                <div id="incorrectGuessListTitle"></div>
-                <div id=incorrectGuessList></div>
+            <div id="incorrectGuessListTitle"></div>
+            <div id=incorrectGuessList></div>
         </div>
     </div>
 
@@ -73,6 +82,7 @@
     <script type="text/javascript">
 
         var listofTeams = ["Arsenal", "Aston Villa", "Bournemouth", "Brighton Hove Albion", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Leicester City", "Liverpool", "Manchester City", "Manchester United", "Newcastle United", "Norwich City", "Sheffield United", "Southampton", "Tottenham Hotspur", "Watford", "West Ham United", "Wolverhampton Wanderers"];  // listofTeams is the array containing all 20 possible answers
+        var permissableGuesses = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
         var chosenTeam = [];  // chosenTeam is the team the computer randomly selects
         var chosenTeamLowerCase = [];  // chosenTeam is the lower case of chosenTeam - used for search, not for display
         var blankDisplay = [];  // blankDisplay is how the blanks are shown on the screen
@@ -86,8 +96,7 @@
         var playerOutcome = [];  //playerOutcome prints out how far the player got [by the end of the game]
         var incorrectGuesses = [];  //incorrectGuesses logs incorrectly guessed letters - to display, but also count guessesRemaining
         var gamesWon = 0; //gamesWon counts total number of games won
-        var gamesLost = 0;  //gamesWon counts total number of games lost
-
+        var gameStarted = false  //Boolean on whether game has started
 
         //INSERT ANY-KEY PRESS TO START THE GAME
         // var wannaPlay = confirm("Do you like soccer? Let's play a game!");
@@ -112,112 +121,169 @@
                 blankDisplay.push(" _ ");
                 if (blankDisplay.length === teamNameLength) {
                     console.log(blankDisplay);
+                    //Writing initial blank placeholder to screen, so player knows how long the name is
                     document.getElementById("letterContainer").innerHTML = blankDisplay;
-              }
-            }
-        }
-
-        function playerGuesses() {
-            // Senses which key the player has selected
-            document.onkeyup = function (event) {
-                letterGuessed = event.key.toLowerCase();
-                // console.log(letterGuessed);
-
-                //guessCounter incremented by for each guess
-                guessCounter++;
-                console.log("guessCounter: " + guessCounter);
-                //If guess correct, move on to log guess, otherwise log as incorrect, decrement guessesRemaining
-                if(chosenTeamLowerCase.indexOf(letterGuessed)> -1) {
-                    checkWinLose();
-                    locateGuessinString();
-                } else
-                incorrectGuesses.push (letterGuessed);
-                console.log("incorrectGuesses: " + incorrectGuesses);
-                guessesRemaining = (10-incorrectGuesses.length);
-                console.log("guessesRemaining: " + guessesRemaining);
-                displayUpdate();
-                checkWinLose();
-            }
-        }
-        
-            function locateGuessinString() {
-                // Determines which position in the array the letter sits 
-                for (var stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
-                    if (chosenTeamLowerCase[stringLocation] === letterGuessed) {
-                        letterPosition.push (stringLocation);
-                    } 
+                    //Filling in any blanks in the name, without impacting player / computer score
+                    locateGuessinString(" ");
                 }
-                replacePlaceholders();
-
-                //Clears the letterPosition array - and therefore the occurrenceCount
-                letterPosition = [];
             }
+        }
+        //After displayPlaceholders, playerGuesses is called
 
-        function replacePlaceholders() {
+            function playerGuesses() {
+                // //PUT IF/ELSE 'HAS GAME STARTED?' - IF NOT, DO NOT GO FURTHER
+                // if(gameStarted === false) {
+                //     document.getElementById("pressAnyKey").style.display = "flex";
+                //     } else {
+                    // Senses which key the player has selected
+                    document.onkeyup = function (event) {
+                        letterGuessed = event.key.toLowerCase();
+                        // console.log(letterGuessed);
+
+                        //guessCounter incremented by for each guess
+                        guessCounter++;
+                        console.log("guessCounter: " + guessCounter);
+                        //Check if key hit is a permissable guess (i.e. a letter and no other key)
+                        if (permissableGuesses.indexOf(letterGuessed) > -1) {
+                            //If guess correct, move on to log guess, otherwise log as incorrect, decrement guessesRemaining
+                            if (chosenTeamLowerCase.indexOf(letterGuessed) > -1) {
+                                checkWinLose();
+                                locateGuessinString(letterGuessed);
+                            } else
+                                //Incorrect guess added to array of incorrect guesses
+                                incorrectGuesses.push(letterGuessed);
+                            console.log("incorrectGuesses: " + incorrectGuesses);
+                            //Guesses remaining updated
+                            guessesRemaining = (10 - incorrectGuesses.length);
+                            console.log("guessesRemaining: " + guessesRemaining);
+                            displayUpdate(totalGuessed , incorrectGuesses.length);
+                            checkWinLose();
+                        }
+                    }
+                // }
+            }    
+
+            function locateGuessinString(searchValue) {
+                // Determines which position in the array the letter sits
+                //Check if player has already guessed that letter - disregard if they have
+                if (blankDisplay.indexOf(searchValue) > -1) {
+                } else {
+                    for (var stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
+                        if (chosenTeamLowerCase[stringLocation] === searchValue) {
+                            letterPosition.push(stringLocation);
+                        }
+                    }
+                }
+                replacePlaceholders(blankDisplay);
+
+            //Clears the letterPosition array - and therefore the occurrenceCount
+            letterPosition = [];
+        }
+
             // Replace blanks with letters guessed
-        occurrenceCount = letterPosition.length;
-            console.log("occurrenceCount: " + occurrenceCount);
-            totalGuessed += occurrenceCount;
-            console.log("totalGuessed: " + totalGuessed);    
-            console.log("guessCounter: " + guessCounter);
-            console.log("guessesRemaining: " + guessesRemaining);
-            for (var stringLocation = 0; stringLocation <  occurrenceCount; stringLocation++) {
-            blankDisplay[letterPosition[stringLocation]] = (chosenTeam[letterPosition[stringLocation]]);
-            //Log latest to playerOutcome
-            playerOutcome = [];
-            playerOutcome = playerOutcome.toString() + blankDisplay.toString();
-            }
-            // console.log(blankDisplay);
+            function replacePlaceholders(Display) {
+                occurrenceCount = letterPosition.length;
+                // console.log("occurrenceCount: " + occurrenceCount);
+                totalGuessed += occurrenceCount;
+                // console.log("totalGuessed: " + totalGuessed);
+                // console.log("guessCounter: " + guessCounter);
+                // console.log("guessesRemaining: " + guessesRemaining);
+                for (var stringLocation = 0; stringLocation < occurrenceCount; stringLocation++) {
+                    Display[letterPosition[stringLocation]] = (chosenTeam[letterPosition[stringLocation]]);
+                    //Log latest to playerOutcome
+                    playerOutcome = [];
+                    playerOutcome = playerOutcome.toString() + Display.toString();
+                }
+            console.log(Display);
+            console.log(playerOutcome);
         }
 
 
         function checkWinLose() {
-            if ((totalGuessed >= teamNameLength) && (guessesRemaining >0)) {
-            //     document.write("Goooooaaaaallll - you win!  <br />" + blankDisplay);
-            document.getElementById("teamBadge").style.display = "flex";
-            alert("Goooooaaaaallll - you win!" + "\n \n" + blankDisplay.toString());
+            if ((totalGuessed >= teamNameLength) && (guessesRemaining > 0)) {
+                //     document.write("Goooooaaaaallll - you win!  <br />" + blankDisplay);
+                document.getElementById("teamBadge").style.display = "flex";
+                document.getElementById("pressToRestart").style.display = "flex";
+                // alert("Goooooaaaaallll - you win!" + "\n \n" + blankDisplay.toString());
                 gamesWon++;
+                document.getElementById("totalScore").innerHTML = "TOTAL SCORE :  " + gamesWon;
                 console.log(gamesWon);
             } else
-            
-            if ((totalGuessed < teamNameLength) && (guessesRemaining <1)) {
-               alert("Loser...! You guessed:  " + playerOutcome  + "\n \n" + "The correct answer was:  " + chosenTeam);
-               gamesLost++;
-                console.log(gamesLost);
-            } 
 
+                if ((totalGuessed < teamNameLength) && (guessesRemaining < 1)) {
+                    alert("Loser...! You guessed:  " + playerOutcome + "\n \n" + "The correct answer was:  " + chosenTeam);
+                }
+                // restartButton.addEventListener("click", myScript);
         }
 
-            function displayUpdate() {
-                document.getElementById("playerScore").innerHTML = totalGuessed;
-                document.getElementById("computerScore").innerHTML = incorrectGuesses.length;
-                if (totalGuessed < 1){
+        function displayUpdate(playerScoreCount , computerScoreCount) {
+            document.getElementById("playerScore").innerHTML = playerScoreCount;
+            document.getElementById("computerScore").innerHTML = computerScoreCount;
+            if (totalGuessed < 1) {
                 document.getElementById("letterContainer").innerHTML = blankDisplay;
-                }
-                else {document.getElementById("letterContainer").innerHTML = playerOutcome;
-                }
-                if (incorrectGuesses.length > 0) {
+            }
+            else {
+                document.getElementById("letterContainer").innerHTML = playerOutcome;
+            }
+            if (computerScoreCount > 0) {
                 document.getElementById("incorrectGuessListTitle").innerHTML = "Incorrect guesses:  ";
                 document.getElementById("incorrectGuessList").innerHTML = incorrectGuesses;
-                }
             }
+        }
+
+
+        // function displayUpdate() {
+        //     document.getElementById("playerScore").innerHTML = totalGuessed;
+        //     document.getElementById("computerScore").innerHTML = incorrectGuesses.length;
+        //     if (totalGuessed < 1) {
+        //         document.getElementById("letterContainer").innerHTML = blankDisplay;
+        //     }
+        //     else {
+        //         document.getElementById("letterContainer").innerHTML = playerOutcome;
+        //     }
+        //     if (incorrectGuesses.length > 0) {
+        //         document.getElementById("incorrectGuessListTitle").innerHTML = "Incorrect guesses:  ";
+        //         document.getElementById("incorrectGuessList").innerHTML = incorrectGuesses;
+        //     }
+        // }
+
+            function pressToRestart() {
+                    // gameStarted = true;
+                    totalGuessed = 0;
+                    guessesRemaining = 0;
+                    guessCounter = 0;
+                    incorrectGuesses = [];
+                    blankDisplay = [];
+                    playerOutcome = [];
+                    document.getElementById("teamBadge").style.display = "none";
+                    document.getElementById("pressToRestart").style.display = "none";
+                    displayUpdate(totalGuessed , incorrectGuesses.length);
+                    replacePlaceholders(blankDisplay);
+                    playGame();
+                    }
+
+        //Boolean : has game started
 
         //FUNCTION CALLS FOR PROGRAM EXECUTION   
+        playGame()
+
+        function playGame() {
         chooseTeam();
         chosenTeamLengthCount();
         displayPlaceholders();
         playerGuesses();
-        replacePlaceholders();
+        }
+        // replacePlaceholders();
 
 
 
     </script>
 
-<footer class="footer mt-auto py-3">
+    <footer class="footer mt-auto py-3">
         <div class="container">
-          <span class="text-muted">Copyright &copy</span>
+            <span class="text-muted">Copyright &copy</span>
         </div>
-      </footer>
+    </footer>
 
 
 
