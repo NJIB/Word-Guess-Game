@@ -71,13 +71,11 @@ p {
     grid-template-columns: 33% 34% 33%;
     grid-template-rows: auto;
     box-sizing: border-box;
-    /* margin-left: auto;
-    margin-right: auto; */
 }
 
 #teamBadge {
     position: relative;
-    top: -50px;
+    top: -25px;
     width: 185px;
     margin-left: auto;
     margin-right: auto;
@@ -132,12 +130,12 @@ p {
 }
 
 .letter-container {
-    display: grid;
-    box-sizing: border-box;
+    /* display: grid; */
+    /* box-sizing: border-box; */
     width: 100%;
     margin: auto;
-    grid-template-columns: 10% 80% 10%;
-    grid-template-rows: auto;
+    /* grid-template-columns: 10% 80% 10%;
+    grid-template-rows: auto; */
     text-align: center;
     color: yellow;
     font-size: 30px;

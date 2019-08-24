@@ -31,7 +31,7 @@
     </header>
 
     <!--Creating a div on the browser, to display the total score-->
-    <div id="totalScore">TOTAL SCORE:  </div>
+    <div id="totalScore">TOTAL SCORE: </div>
 
     <!--Creating a div on the browser, to display the scoreboard-->
     <!-- <div class="container"> -->
@@ -55,7 +55,7 @@
         <div>
         </div>
         <div id="teamBadge">
-        <img src="https://upload.wikimedia.org/wikipedia/hif/b/bd/Liverpool_FC.png" height=250 width=185>;
+            <img src="https://upload.wikimedia.org/wikipedia/hif/b/bd/Liverpool_FC.png" height=250 width=185>;
         </div>
         <!-- <div id="pressToRestart"> -->
         <button id="pressToRestart" onclick="pressToRestart()">Play again?</button>
@@ -65,9 +65,7 @@
     <!--Creating a div on the browser, to display the scoreboard-->
     <div class="game-container">
         <div class="letter-container">
-            <div id=></div>
             <div id="letterContainer"></div>
-            <div></div>
         </div>
         <div id="incorrect-letter-container">
             <div id="incorrectGuessListTitle"></div>
@@ -96,7 +94,7 @@
         var playerOutcome = [];  //playerOutcome prints out how far the player got [by the end of the game]
         var incorrectGuesses = [];  //incorrectGuesses logs incorrectly guessed letters - to display, but also count guessesRemaining
         var gamesWon = 0; //gamesWon counts total number of games won
-        var gameStarted = false  //Boolean on whether game has started
+        var endResult = []  //Holds win/lose statement to be displayed to player
 
         //INSERT ANY-KEY PRESS TO START THE GAME
         // var wannaPlay = confirm("Do you like soccer? Let's play a game!");
@@ -130,93 +128,101 @@
         }
         //After displayPlaceholders, playerGuesses is called
 
-            function playerGuesses() {
-                // //PUT IF/ELSE 'HAS GAME STARTED?' - IF NOT, DO NOT GO FURTHER
-                // if(gameStarted === false) {
-                //     document.getElementById("pressAnyKey").style.display = "flex";
-                //     } else {
-                    // Senses which key the player has selected
-                    document.onkeyup = function (event) {
-                        letterGuessed = event.key.toLowerCase();
-                        // console.log(letterGuessed);
+        function playerGuesses() {
+            // Senses which key the player has selected
+            document.onkeyup = function (event) {
+                letterGuessed = event.key.toLowerCase();
+                // console.log(letterGuessed);
 
-                        //guessCounter incremented by for each guess
-                        guessCounter++;
-                        console.log("guessCounter: " + guessCounter);
-                        //Check if key hit is a permissable guess (i.e. a letter and no other key)
-                        if (permissableGuesses.indexOf(letterGuessed) > -1) {
-                            //If guess correct, move on to log guess, otherwise log as incorrect, decrement guessesRemaining
-                            if (chosenTeamLowerCase.indexOf(letterGuessed) > -1) {
-                                checkWinLose();
-                                locateGuessinString(letterGuessed);
-                            } else
-                                //Incorrect guess added to array of incorrect guesses
-                                incorrectGuesses.push(letterGuessed);
+                //guessCounter incremented by for each guess
+                guessCounter++;
+                console.log("guessCounter: " + guessCounter);
+                //Check if key hit is a permissable guess (i.e. a letter and no other key)
+                if (permissableGuesses.indexOf(letterGuessed) > -1) {
+                    //If guess correct, move on to log guess, otherwise log as incorrect, decrement guessesRemaining
+                    if (chosenTeamLowerCase.indexOf(letterGuessed) > -1) {
+                        locateGuessinString(letterGuessed);
+                        displayUpdate(totalGuessed, incorrectGuesses.length);
+                        checkWinLose();
+                    } else
+                        //Incorrect guess added to array of incorrect guesses
+                        //Check if player has already guessed that letter - disregard if they have
+                        if (incorrectGuesses.indexOf(letterGuessed) > -1) {
+                            //Clearing letterGuessed, so it does not write to incorrectGuesses twice
+                            letterGuessed = [];
+                        } else {
+                            incorrectGuesses.push(letterGuessed);
                             console.log("incorrectGuesses: " + incorrectGuesses);
                             //Guesses remaining updated
                             guessesRemaining = (10 - incorrectGuesses.length);
                             console.log("guessesRemaining: " + guessesRemaining);
-                            displayUpdate(totalGuessed , incorrectGuesses.length);
+                            displayUpdate(totalGuessed, incorrectGuesses.length);
                             checkWinLose();
                         }
-                    }
-                // }
-            }    
+                }
+            }
+        }
 
-            function locateGuessinString(searchValue) {
-                // Determines which position in the array the letter sits
-                //Check if player has already guessed that letter - disregard if they have
-                if (blankDisplay.indexOf(searchValue) > -1) {
-                } else {
-                    for (var stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
-                        if (chosenTeamLowerCase[stringLocation] === searchValue) {
-                            letterPosition.push(stringLocation);
-                        }
+        function locateGuessinString(searchValue) {
+            // Determines which position in the array the letter sits
+            //Check if player has already guessed that letter - disregard if they have
+            if (blankDisplay.indexOf(searchValue) > -1)            
+            {
+            } else {
+                for (var stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
+                    if (chosenTeamLowerCase[stringLocation] === searchValue) {
+                        letterPosition.push(stringLocation);
                     }
                 }
-                replacePlaceholders(blankDisplay);
+            }
+            replacePlaceholders(blankDisplay);
 
             //Clears the letterPosition array - and therefore the occurrenceCount
             letterPosition = [];
         }
 
-            // Replace blanks with letters guessed
-            function replacePlaceholders(Display) {
-                occurrenceCount = letterPosition.length;
-                // console.log("occurrenceCount: " + occurrenceCount);
-                totalGuessed += occurrenceCount;
-                // console.log("totalGuessed: " + totalGuessed);
-                // console.log("guessCounter: " + guessCounter);
-                // console.log("guessesRemaining: " + guessesRemaining);
-                for (var stringLocation = 0; stringLocation < occurrenceCount; stringLocation++) {
-                    Display[letterPosition[stringLocation]] = (chosenTeam[letterPosition[stringLocation]]);
-                    //Log latest to playerOutcome
-                    playerOutcome = [];
-                    playerOutcome = playerOutcome.toString() + Display.toString();
-                }
+        // Replace blanks with letters guessed
+        function replacePlaceholders(Display) {
+            occurrenceCount = letterPosition.length;
+            // console.log("occurrenceCount: " + occurrenceCount);
+            totalGuessed += occurrenceCount;
+            // console.log("totalGuessed: " + totalGuessed);
+            // console.log("guessCounter: " + guessCounter);
+            // console.log("guessesRemaining: " + guessesRemaining);
+            for (var stringLocation = 0; stringLocation < occurrenceCount; stringLocation++) {
+                Display[letterPosition[stringLocation]] = (chosenTeam[letterPosition[stringLocation]]);
+                //Log latest to playerOutcome
+                playerOutcome = [];
+                playerOutcome = playerOutcome.toString() + Display.toString();
+            }
             console.log(Display);
             console.log(playerOutcome);
         }
 
 
         function checkWinLose() {
-            if ((totalGuessed >= teamNameLength) && (guessesRemaining > 0)) {
-                //     document.write("Goooooaaaaallll - you win!  <br />" + blankDisplay);
-                document.getElementById("teamBadge").style.display = "flex";
-                document.getElementById("pressToRestart").style.display = "flex";
-                // alert("Goooooaaaaallll - you win!" + "\n \n" + blankDisplay.toString());
-                gamesWon++;
-                document.getElementById("totalScore").innerHTML = "TOTAL SCORE :  " + gamesWon;
-                console.log(gamesWon);
-            } else
+            if (guessCounter <= 1) {
+            } else {
+                if ((totalGuessed >= teamNameLength) && (guessesRemaining > 0)) {
+                    document.getElementById("teamBadge").style.display = "flex";
+                    document.getElementById("pressToRestart").style.display = "flex";
+                    endResult = ("Goal...! &nbsp You got it - the correct answer was &nbsp" + chosenTeam);
+                    document.getElementById("letterContainer").innerHTML = endResult;
+                    gamesWon++;
+                    document.getElementById("totalScore").innerHTML = "TOTAL SCORE :  " + gamesWon;
+                    console.log(gamesWon);
+                } else
 
-                if ((totalGuessed < teamNameLength) && (guessesRemaining < 1)) {
-                    alert("Loser...! You guessed:  " + playerOutcome + "\n \n" + "The correct answer was:  " + chosenTeam);
-                }
-                // restartButton.addEventListener("click", myScript);
+                    if ((totalGuessed < teamNameLength) && (guessesRemaining < 1)) {
+                        document.getElementById("teamBadge").style.display = "flex";
+                        document.getElementById("pressToRestart").style.display = "flex";
+                        endResult = ("You lose...! &nbsp The correct answer was&nbsp" + chosenTeam);
+                        document.getElementById("letterContainer").innerHTML = endResult;
+                    }
+            }
         }
 
-        function displayUpdate(playerScoreCount , computerScoreCount) {
+        function displayUpdate(playerScoreCount, computerScoreCount) {
             document.getElementById("playerScore").innerHTML = playerScoreCount;
             document.getElementById("computerScore").innerHTML = computerScoreCount;
             if (totalGuessed < 1) {
@@ -231,47 +237,31 @@
             }
         }
 
-
-        // function displayUpdate() {
-        //     document.getElementById("playerScore").innerHTML = totalGuessed;
-        //     document.getElementById("computerScore").innerHTML = incorrectGuesses.length;
-        //     if (totalGuessed < 1) {
-        //         document.getElementById("letterContainer").innerHTML = blankDisplay;
-        //     }
-        //     else {
-        //         document.getElementById("letterContainer").innerHTML = playerOutcome;
-        //     }
-        //     if (incorrectGuesses.length > 0) {
-        //         document.getElementById("incorrectGuessListTitle").innerHTML = "Incorrect guesses:  ";
-        //         document.getElementById("incorrectGuessList").innerHTML = incorrectGuesses;
-        //     }
-        // }
-
-            function pressToRestart() {
-                    // gameStarted = true;
-                    totalGuessed = 0;
-                    guessesRemaining = 0;
-                    guessCounter = 0;
-                    incorrectGuesses = [];
-                    blankDisplay = [];
-                    playerOutcome = [];
-                    document.getElementById("teamBadge").style.display = "none";
-                    document.getElementById("pressToRestart").style.display = "none";
-                    displayUpdate(totalGuessed , incorrectGuesses.length);
-                    replacePlaceholders(blankDisplay);
-                    playGame();
-                    }
-
-        //Boolean : has game started
+        function pressToRestart() {
+            // gameStarted = true;
+            totalGuessed = 0;
+            guessesRemaining = 10;
+            guessCounter = 0;
+            incorrectGuesses = [];
+            blankDisplay = [];
+            playerOutcome = [];
+            document.getElementById("teamBadge").style.display = "none";
+            document.getElementById("pressToRestart").style.display = "none";
+            document.getElementById("incorrectGuessListTitle").innerHTML = "";
+            document.getElementById("incorrectGuessList").innerHTML = "";
+            displayUpdate(totalGuessed, incorrectGuesses.length);
+            replacePlaceholders(blankDisplay);
+            playGame();
+        }
 
         //FUNCTION CALLS FOR PROGRAM EXECUTION   
         playGame()
 
         function playGame() {
-        chooseTeam();
-        chosenTeamLengthCount();
-        displayPlaceholders();
-        playerGuesses();
+            chooseTeam();
+            chosenTeamLengthCount();
+            displayPlaceholders();
+            playerGuesses();
         }
         // replacePlaceholders();
 
