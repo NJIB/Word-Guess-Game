@@ -21,13 +21,11 @@ header{
 
 
 body{
-    /* background-image: url("../images/soccer-goal-football-goalpost-with-net-on-a-vector-21718856.jpg"); */
     background-image: url("../images/soccer-goal-football-goalpost-with-net-on-a-vector-21718856.jpg");
     background-repeat: no-repeat;
     background-size: 100% 600px;
 }
 
-/* NEED TO ANCHOR FOOTER TO BOTTOM - USE BOOTSTRAP TO MAKE MORE INTERESTING */
 footer{
     bottom: 0px;
     position: fixed;
@@ -82,11 +80,11 @@ p {
     display: none;
 }
 
-#pressAnyKey {
+#goalKeeper {
     position: relative;
     top: 120px;
     margin-left: 100px;
-    display: none;
+    /* display: none; */
     font-family: 'Bungee Inline', cursive;
     color: yellow;
 }
@@ -116,7 +114,7 @@ p {
 
 .letter-container {
     width: 100%;
-    margin: auto;
+    /* margin: auto; */
     text-align: center;
     color: yellow;
     font-size: 30px;
@@ -154,14 +152,27 @@ padding-right: 40px;
 }
 
 
-@media screen and (max-width: 700px){
+@media screen and (max-width: 767px){
     .container{width: 100%;}
     .scoreBoard-container {
         width: 90%;
         margin: auto;
         grid-template-columns: auto auto 20% auto auto;
         font-size: 20px;
-    }       
+    }     
+    
+    h1 {
+        font-size: 25px;
+    }
+
+    .letter-container {
+        font-size: 20px;
+    }
+
+    #incorrect-letter-container {
+        font-size: 20px;
+        margin-top:20px;
+    }
 }
 
 @media screen and (max-width: 639px){
@@ -172,6 +183,21 @@ padding-right: 40px;
         grid-template-columns: auto auto 20% auto auto;
         font-size: 20px;
     }   
+
+    h1 {
+        font-size: 25px;
+    }
+
+    .letter-container {
+        font-size: 20px;
+    }
+
+    #incorrect-letter-container {
+        font-size: 20px;
+        margin-top:20px;
+        padding: 0px;
+    }
+
 }
 
 
