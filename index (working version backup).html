@@ -71,9 +71,8 @@
     </div>
 
     <!--Link to game script-->
-    <!-- <script src="../assets/javascript/game.js"></script> -->
+    <script src="../assets/javascript/game.js"></script>
 
-    <!-- THIS SCRIPT WILL GET MOVED INTO THE GAME.JS FILE-->
     <script type="text/javascript">
 
         var listofTeams = ["Arsenal", "Aston Villa", "Bournemouth", "Brighton Hove Albion", "Burnley", "Chelsea", "Crystal Palace", "Everton", "Leicester City", "Liverpool", "Manchester City", "Manchester United", "Newcastle United", "Norwich City", "Sheffield United", "Southampton", "Tottenham Hotspur", "Watford", "West Ham United", "Wolverhampton Wanderers"];  // listofTeams is the array containing all 20 possible answers
@@ -93,10 +92,6 @@
         var gamesWon = 0; //gamesWon counts total number of games won
         var endResult = []  //Holds win/lose statement to be displayed to player
         var teamBadgeAddress = []  //Address to display team badge
-
-        //INSERT ANY-KEY PRESS TO START THE GAME
-        // var wannaPlay = confirm("Do you like soccer? Let's play a game!");
-
 
         // Computer randomly chooses a team
         function chooseTeam() {
