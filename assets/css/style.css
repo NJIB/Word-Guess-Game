@@ -68,15 +68,15 @@ p {
 
 .goalAreaMessages {
     display: grid;
-    grid-template-columns: 33% 34% 33%;
+    grid-template-columns: 36% 28% 36%;
     grid-template-rows: auto;
     box-sizing: border-box;
 }
 
 #teamBadge {
     position: relative;
-    top: -25px;
-    width: 185px;
+    top: -15px;
+    /* width: 185px; */
     margin-left: auto;
     margin-right: auto;
     display: none;
@@ -93,32 +93,17 @@ p {
 
 #pressToRestart {
     position: relative;
-    top: 50px;
-    height: 120px;
+    top: 90px;
+    height: 70px;
     width: 250px;
     background: white;
     display: none;
     font-family: 'Bungee Inline', cursive;
     color: orange;
-    font-size: 50px;
-    line-height: 50px;
-}
-
-
-
-/* button {
-    position: absolute;
-    width: 250px;
-    height: 100px;
-    background: white;
-    border: none;
-    font-size: 50px;
-    font-family: 'Bungee Inline', cursive;
-    line-height: 50px;
-    color: orange;
+    font-size: 30px;
+    padding-left: 15px;
     text-align: center;
-    display: none;
-} */
+}
 
 .game-container {
     position: absolute;
@@ -130,12 +115,8 @@ p {
 }
 
 .letter-container {
-    /* display: grid; */
-    /* box-sizing: border-box; */
     width: 100%;
     margin: auto;
-    /* grid-template-columns: 10% 80% 10%;
-    grid-template-rows: auto; */
     text-align: center;
     color: yellow;
     font-size: 30px;

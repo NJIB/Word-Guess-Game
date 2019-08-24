@@ -24,7 +24,6 @@
 </head>
 
 <body>
-    <!-- document.getElementById("body").addEventListener("keypress", startGame()); -->
 
     <header>
         <h1 id="topBanner"> Premier League Word Guess Game</h1>
@@ -55,11 +54,9 @@
         <div>
         </div>
         <div id="teamBadge">
-            <img src="https://upload.wikimedia.org/wikipedia/hif/b/bd/Liverpool_FC.png" height=250 width=185>;
+            <!-- <img src="assets/images/liverpool.png" height=250 width=185>; -->
         </div>
-        <!-- <div id="pressToRestart"> -->
         <button id="pressToRestart" onclick="pressToRestart()">Play again?</button>
-        <!-- </div> -->
     </div>
 
     <!--Creating a div on the browser, to display the scoreboard-->
@@ -95,6 +92,7 @@
         var incorrectGuesses = [];  //incorrectGuesses logs incorrectly guessed letters - to display, but also count guessesRemaining
         var gamesWon = 0; //gamesWon counts total number of games won
         var endResult = []  //Holds win/lose statement to be displayed to player
+        var teamBadgeAddress = []  //Address to display team badge
 
         //INSERT ANY-KEY PRESS TO START THE GAME
         // var wannaPlay = confirm("Do you like soccer? Let's play a game!");
@@ -118,7 +116,7 @@
             for (var blankCount = 0; blankCount < teamNameLength; blankCount++) {
                 blankDisplay.push(" _ ");
                 if (blankDisplay.length === teamNameLength) {
-                    console.log(blankDisplay);
+                    // console.log(blankDisplay);
                     //Writing initial blank placeholder to screen, so player knows how long the name is
                     document.getElementById("letterContainer").innerHTML = blankDisplay;
                     //Filling in any blanks in the name, without impacting player / computer score
@@ -166,8 +164,7 @@
         function locateGuessinString(searchValue) {
             // Determines which position in the array the letter sits
             //Check if player has already guessed that letter - disregard if they have
-            if (blankDisplay.indexOf(searchValue) > -1)            
-            {
+            if (blankDisplay.indexOf(searchValue) > -1) {
             } else {
                 for (var stringLocation = 0; stringLocation < teamNameLength; stringLocation++) {
                     if (chosenTeamLowerCase[stringLocation] === searchValue) {
@@ -201,10 +198,9 @@
 
 
         function checkWinLose() {
-            if (guessCounter <= 1) {
-            } else {
                 if ((totalGuessed >= teamNameLength) && (guessesRemaining > 0)) {
-                    document.getElementById("teamBadge").style.display = "flex";
+                    selectTeamBadge(chosenTeam);
+                    // document.getElementById("teamBadge").style.display = "flex";
                     document.getElementById("pressToRestart").style.display = "flex";
                     endResult = ("Goal...! &nbsp You got it - the correct answer was &nbsp" + chosenTeam);
                     document.getElementById("letterContainer").innerHTML = endResult;
@@ -214,13 +210,13 @@
                 } else
 
                     if ((totalGuessed < teamNameLength) && (guessesRemaining < 1)) {
+                        selectTeamBadge(chosenTeam);
                         document.getElementById("teamBadge").style.display = "flex";
                         document.getElementById("pressToRestart").style.display = "flex";
                         endResult = ("You lose...! &nbsp The correct answer was&nbsp" + chosenTeam);
                         document.getElementById("letterContainer").innerHTML = endResult;
                     }
             }
-        }
 
         function displayUpdate(playerScoreCount, computerScoreCount) {
             document.getElementById("playerScore").innerHTML = playerScoreCount;
@@ -253,6 +249,26 @@
             replacePlaceholders(blankDisplay);
             playGame();
         }
+
+
+        function selectTeamBadge(teamName) {
+            //Construct image address
+            teamBadgeAddress = "assets/images/" + teamName + ".png";
+            console.log(teamBadgeAddress);
+            // document.getElementById("teamBadge").src = '"' + teamBadgeAddress + '"';
+            var badgeDiv = document.getElementById("teamBadge");
+            badgeDiv.innerHTML = "";
+
+            var winnerBadge = document.createElement("IMG");
+                winnerBadge.setAttribute("src", teamBadgeAddress);
+                winnerBadge.setAttribute("width", "auto");
+                winnerBadge.setAttribute("height", "250");
+                winnerBadge.setAttribute("alt", "Team Badge");
+                badgeDiv.appendChild(winnerBadge);
+
+            document.getElementById("teamBadge").style.display = "flex";
+        }
+
 
         //FUNCTION CALLS FOR PROGRAM EXECUTION   
         playGame()
