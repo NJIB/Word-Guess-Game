@@ -48,7 +48,7 @@ function displayPlaceholders() {
         if (blankDisplay.length === teamNameLength) {
             // console.log(blankDisplay);
             //Writing initial blank placeholder to screen, so player knows how long the name is
-            document.getElementById("letterContainer").innerHTML = blankDisplay;
+            document.getElementById("letterContainer").innerHTML = blankDisplay.join('');
             //Filling in any blanks in the name, without impacting player / computer score
             locateGuessinString(" ");
         }
